@@ -216,6 +216,38 @@ void UdpSocket::Send(
 	}
 }
 
+bool UdpSocket::SetSendBufferSize(int value)
+{
+	MS_TRACE();
+
+	int err = uv_send_buffer_size((uv_handle_t*)(this->uvHandle), &value);
+
+	if (err != 0)
+	{
+		MS_ERROR("uv_send_buffer_size() failed: %s", uv_strerror(err));
+		
+		return false;
+	}
+
+	return true;
+}
+
+bool UdpSocket::SetRecvBufferSize(int value)
+{
+	MS_TRACE();
+
+	int err = uv_recv_buffer_size((uv_handle_t*)(this->uvHandle), &value);
+
+	if (err != 0)
+	{
+		MS_ERROR("uv_recv_buffer_size() failed: %s", uv_strerror(err));
+
+		return false;
+	}
+
+	return true;
+}
+
 bool UdpSocket::SetLocalAddress()
 {
 	MS_TRACE();

@@ -46,6 +46,9 @@ public:
 	void Close();
 	virtual void Dump() const;
 	void Send(const uint8_t* data, size_t len, const struct sockaddr* addr, UdpSocket::onSendCallback* cb);
+	bool SetSendBufferSize(int value);
+	bool SetRecvBufferSize(int value);
+
 	const struct sockaddr* GetLocalAddress() const
 	{
 		return reinterpret_cast<const struct sockaddr*>(&this->localAddr);

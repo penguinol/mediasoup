@@ -88,6 +88,30 @@ namespace RTC
 
 			throw;
 		}
+
+		auto jsonSendBufferSize = data.find("sendBufferSize");
+
+		if (jsonSendBufferSize != data.end())
+		{
+			if (!Utils::Json::IsPositiveInteger(*jsonSendBufferSize))
+				MS_THROW_TYPE_ERROR("invalid sendBufferSize");
+
+			int32_t udpSocketBufferSize = jsonSendBufferSize->get<int32_t>();
+
+			this->udpSocket->SetSendBufferSize(udpSocketBufferSize);
+		}
+
+		auto jsonRecvBufferSize = data.find("recvBufferSize");
+
+		if (jsonRecvBufferSize != data.end())
+		{
+			if (!Utils::Json::IsPositiveInteger(*jsonRecvBufferSize))
+				MS_THROW_TYPE_ERROR("invalid recvBufferSize");
+
+			int32_t udpSocketBufferSize = jsonRecvBufferSize->get<int32_t>();
+
+			this->udpSocket->SetRecvBufferSize(udpSocketBufferSize);
+		}
 	}
 
 	PipeTransport::~PipeTransport()

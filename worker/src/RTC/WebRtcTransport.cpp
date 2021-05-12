@@ -145,6 +145,30 @@ namespace RTC
 					// This may throw.
 					auto* udpSocket = new RTC::UdpSocket(this, listenIp.ip);
 
+					auto jsonSendBufferSize = data.find("sendBufferSize");
+
+					if (jsonSendBufferSize != data.end())
+					{
+						if (!Utils::Json::IsPositiveInteger(*jsonSendBufferSize))
+							MS_THROW_TYPE_ERROR("invalid sendBufferSize");
+
+						int32_t udpSocketBufferSize = jsonSendBufferSize->get<int32_t>();
+
+						udpSocket->SetSendBufferSize(udpSocketBufferSize);
+					}
+
+					auto jsonRecvBufferSize = data.find("recvBufferSize");
+
+					if (jsonRecvBufferSize != data.end())
+					{
+						if (!Utils::Json::IsPositiveInteger(*jsonRecvBufferSize))
+							MS_THROW_TYPE_ERROR("invalid recvBufferSize");
+
+						int32_t udpSocketBufferSize = jsonRecvBufferSize->get<int32_t>();
+
+						udpSocket->SetRecvBufferSize(udpSocketBufferSize);
+					}
+					
 					this->udpSockets[udpSocket] = listenIp.announcedIp;
 
 					if (listenIp.announcedIp.empty())

@@ -19,7 +19,8 @@ struct TestNackGeneratorInput
 	  uint16_t firstNacked,
 	  size_t numNacked,
 	  bool keyFrameRequired = false,
-	  size_t nackListSize   = 0)
+	  size_t nackListSize   = 0,
+	  size_t delayMs = 0)
 	  : seq(seq), isKeyFrame(isKeyFrame), firstNacked(firstNacked), numNacked(numNacked),
 	    keyFrameRequired(keyFrameRequired), nackListSize(nackListSize), delayMs(delayMs)
 	{

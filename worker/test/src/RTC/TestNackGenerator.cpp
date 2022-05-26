@@ -4,9 +4,9 @@
 #include "RTC/NackGenerator.hpp"
 #include "RTC/RtpPacket.hpp"
 #include <catch2/catch.hpp>
-#include <vector>
 #include <chrono>
 #include <thread>
+#include <vector>
 
 using namespace RTC;
 
@@ -31,7 +31,7 @@ struct TestNackGeneratorInput
 	size_t numNacked{ 0 };
 	bool keyFrameRequired{ false };
 	size_t nackListSize{ 0 };
-	size_t delayMs{0};
+	size_t delayMs{ 0 };
 };
 
 class TestPayloadDescriptorHandler : public Codecs::PayloadDescriptorHandler
@@ -129,7 +129,7 @@ void validate(std::vector<TestNackGeneratorInput>& inputs)
 	for (auto input : inputs)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(input.delayMs));
-		
+
 		listener.Reset(input);
 
 		TestPayloadDescriptorHandler* tpdh = new TestPayloadDescriptorHandler(input.isKeyFrame);

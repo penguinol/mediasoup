@@ -75,14 +75,9 @@ namespace RTC
 				  packet->GetSequenceNumber(),
 				  isRecovered ? "true" : "false");
 
-				auto retries = it->second.retries;
-
 				this->nackList.erase(it);
 
-				if (retries != 0)
-					return true;
-				else
-					return false;
+				return true;
 			}
 
 			// Out of order packet or already handled NACKed packet.
@@ -113,6 +108,12 @@ namespace RTC
 
 		if (isRecovered)
 		{
+			// Already recovered, ignore it.
+			if (this->recoveredList.find(seq) != this->recoveredList.end())
+			{
+				return false;
+			}
+
 			this->recoveredList.insert(seq);
 
 			// Remove old ones so we don't accumulate recovered packets.
@@ -121,9 +122,8 @@ namespace RTC
 			if (it != this->recoveredList.begin())
 				this->recoveredList.erase(this->recoveredList.begin(), it);
 
-			// Do not let a packet pass if it's newer than last seen seq and came via
-			// RTX.
-			return false;
+			// Let the packet pass if it's newer than last seen seq and came via RTX.
+			return true;
 		}
 
 		AddPacketsToNackList(this->lastSeq + 1, seq);

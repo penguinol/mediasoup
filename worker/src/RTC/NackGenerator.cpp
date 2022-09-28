@@ -110,9 +110,7 @@ namespace RTC
 		{
 			// Already recovered, ignore it.
 			if (this->recoveredList.find(seq) != this->recoveredList.end())
-			{
 				return false;
-			}
 
 			this->recoveredList.insert(seq);
 

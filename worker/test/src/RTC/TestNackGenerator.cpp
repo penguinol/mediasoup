@@ -19,9 +19,10 @@ struct TestNackGeneratorInput
 	  uint16_t firstNacked,
 	  size_t numNacked,
 	  bool keyFrameRequired = false,
-	  size_t nackListSize   = 0)
+	  size_t nackListSize   = 0,
+	  bool isRecovered = false)
 	  : seq(seq), isKeyFrame(isKeyFrame), firstNacked(firstNacked), numNacked(numNacked),
-	    keyFrameRequired(keyFrameRequired), nackListSize(nackListSize)
+	    keyFrameRequired(keyFrameRequired), nackListSize(nackListSize), isRecovered(isRecovered)
 	{
 	}
 
@@ -31,6 +32,7 @@ struct TestNackGeneratorInput
 	size_t numNacked{ 0 };
 	bool keyFrameRequired{ false };
 	size_t nackListSize{ 0 };
+	bool isRecovered{ false };
 };
 
 class TestPayloadDescriptorHandler : public Codecs::PayloadDescriptorHandler
@@ -133,7 +135,7 @@ void validate(std::vector<TestNackGeneratorInput>& inputs)
 
 		packet->SetPayloadDescriptorHandler(tpdh);
 		packet->SetSequenceNumber(input.seq);
-		nackGenerator.ReceivePacket(packet, /*isRecovered*/ false);
+		nackGenerator.ReceivePacket(packet, input.isRecovered);
 
 		listener.Check(nackGenerator);
 	}
@@ -276,6 +278,40 @@ SCENARIO("NACK generator", "[rtp][rtcp]")
 		{
 			{    1, false, 0, 0, false, 0 },
 			{ 3000, false, 0, 0,  true, 0 }
+		};
+		// clang-format on
+
+		validate(inputs);
+	}
+
+	SECTION("Receive RTX packet before RTP packet")
+	{
+		// clang-format off
+		std::vector<TestNackGeneratorInput> inputs =
+		{
+			{ 2371, false, 0, 0, false, 0 },
+			{ 2372, false, 0, 0, false, 0 },
+			{ 2373, false, 0, 0, false, 0 },
+			{ 2374, false, 0, 0, false, 0, true },
+			{ 2374, false, 0, 0, false, 0 },
+			{ 2375, false, 0, 0, false, 0 },
+		};
+		// clang-format on
+
+		validate(inputs);
+	}
+
+	SECTION("Receive RTX without RTP packet")
+	{
+		// clang-format off
+		std::vector<TestNackGeneratorInput> inputs =
+		{
+			{ 2371, false, 0, 0, false, 0 },
+			{ 2372, false, 0, 0, false, 0 },
+			{ 2373, false, 0, 0, false, 0 },
+			{ 2375, false, 0, 0, false, 1, true },
+			{ 2374, false, 0, 0, false, 0, true },
+			{ 2376, false, 0, 0, false, 0 },
 		};
 		// clang-format on
 

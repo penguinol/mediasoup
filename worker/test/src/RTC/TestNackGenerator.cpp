@@ -20,7 +20,7 @@ struct TestNackGeneratorInput
 	  size_t numNacked,
 	  bool keyFrameRequired = false,
 	  size_t nackListSize   = 0,
-	  bool isRecovered = false)
+	  bool isRecovered      = false))
 	  : seq(seq), isKeyFrame(isKeyFrame), firstNacked(firstNacked), numNacked(numNacked),
 	    keyFrameRequired(keyFrameRequired), nackListSize(nackListSize), isRecovered(isRecovered)
 	{

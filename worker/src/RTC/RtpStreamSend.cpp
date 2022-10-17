@@ -311,7 +311,7 @@ namespace RTC
 				this->rtt += (static_cast<float>(rtt & 0x0000FFFF) / 65536) * 1000;
 			}
 
-			this->rtt = std::max<float>(this->rtt, 1.0f);
+			this->rtt    = std::max<float>(this->rtt, 1.0f);
 			this->hasRtt = true;
 		}
 

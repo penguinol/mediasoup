@@ -561,8 +561,20 @@ namespace RTC
 
 		// If no Receiver Extended Report was received by the remote endpoint yet,
 		// ignore lastRr and dlrr values in the Sender Extended Report.
-		if (lastRr && dlrr && (compactNtp > dlrr + lastRr))
-			rtt = compactNtp - dlrr - lastRr;
+		if (lastRr && dlrr)
+		{
+			if (compactNtp > dlrr + lastRr)
+			{
+				rtt = compactNtp - dlrr - lastRr;
+
+				// RTT in milliseconds.
+				this->rtt = static_cast<float>(rtt >> 16) * 1000;
+				this->rtt += (static_cast<float>(rtt & 0x0000FFFF) / 65536) * 1000;
+			}
+
+			this->rtt    = std::max<float>(this->rtt, 1.0f);
+			this->hasRtt = true;
+		}
 
 		// RTT in milliseconds.
 		this->rtt = static_cast<float>(rtt >> 16) * 1000;

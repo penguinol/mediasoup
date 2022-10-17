@@ -301,15 +301,17 @@ namespace RTC
 
 		// If no Sender Report was received by the remote endpoint yet, ignore lastSr
 		// and dlsr values in the Receiver Report.
-		if (lastSr && dlsr && (compactNtp > dlsr + lastSr))
-			rtt = compactNtp - dlsr - lastSr;
-
-		// RTT in milliseconds.
-		this->rtt = static_cast<float>(rtt >> 16) * 1000;
-		this->rtt += (static_cast<float>(rtt & 0x0000FFFF) / 65536) * 1000;
-
-		if (this->rtt > 0.0f)
+		if (lastSr && dlsr)
 		{
+			if (compactNtp > dlsr + lastSr)
+			{
+				rtt = compactNtp - dlsr - lastSr;
+				// RTT in milliseconds.
+				this->rtt = static_cast<float>(rtt >> 16) * 1000;
+				this->rtt += (static_cast<float>(rtt & 0x0000FFFF) / 65536) * 1000;
+			}
+
+			this->rtt = std::max<float>(this->rtt, 1.0f);
 			this->hasRtt = true;
 		}
 
@@ -642,7 +644,7 @@ namespace RTC
 					MS_DEBUG_TAG(
 					  rtx,
 					  "ignoring retransmission for a packet already resent in the last RTT ms "
-					  "[seq:%" PRIu16 ", rtt:%" PRIu32 "]",
+					  "[seq:%" PRIu16 ", rtt:%" PRIu16 "]",
 					  packet->GetSequenceNumber(),
 					  rtt);
 				}

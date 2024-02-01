@@ -195,7 +195,7 @@ namespace RTC
 		uint32_t badSeq{ 0u };
 		// Highest timestamp seen.
 		uint32_t maxPacketTs{ 0u };
-		// When the packet with highest timestammp was seen.
+		// When the packet with highest timestamp was seen.
 		uint64_t maxPacketMs{ 0u };
 		uint32_t packetsLost{ 0u };
 		uint8_t fractionLost{ 0u };

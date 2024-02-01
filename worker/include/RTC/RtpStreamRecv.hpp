@@ -45,7 +45,7 @@ namespace RTC
 		RtpStreamRecv(
 		  RTC::RtpStreamRecv::Listener* listener,
 		  RTC::RtpStream::Params& params,
-		  unsigned int sendNackDelayMs,
+		  uint32_t sendNackDelayMs,
 		  bool useRtpInactivityCheck);
 		~RtpStreamRecv() override;
 
@@ -101,7 +101,7 @@ namespace RTC
 
 	private:
 		// Passed by argument.
-		unsigned int sendNackDelayMs{ 0u };
+		uint32_t sendNackDelayMs{ 0u };
 		bool useRtpInactivityCheck{ false };
 		// Others.
 		// Packets expected at last interval.

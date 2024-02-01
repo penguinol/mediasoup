@@ -752,7 +752,7 @@ namespace RTC
 		return packet;
 	}
 
-	// NOTE: The caller must ensure that the buffer/memmory of the packet has
+	// NOTE: The caller must ensure that the buffer/memory of the packet has
 	// space enough for adding 2 extra bytes.
 	void RtpPacket::RtxEncode(uint8_t payloadType, uint32_t ssrc, uint16_t seq)
 	{

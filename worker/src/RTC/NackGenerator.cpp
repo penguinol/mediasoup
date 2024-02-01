@@ -20,7 +20,7 @@ namespace RTC
 
 	/* Instance methods. */
 
-	NackGenerator::NackGenerator(Listener* listener, unsigned int sendNackDelayMs)
+	NackGenerator::NackGenerator(Listener* listener, uint32_t sendNackDelayMs)
 	  : listener(listener), sendNackDelayMs(sendNackDelayMs), timer(new TimerHandle(this)),
 	    rtt(DefaultRtt)
 	{

@@ -627,7 +627,7 @@ namespace RTC
 
 		if (storedTuple)
 		{
-			MS_DEBUG_DEV('tuple already exists');
+			MS_DEBUG_DEV("tuple already exists");
 
 			return storedTuple;
 		}

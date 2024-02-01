@@ -45,8 +45,8 @@ default: mediasoup-worker
 
 invoke:
 ifeq ($(wildcard $(PIP_INVOKE_DIR)),)
-	# Install pip invoke into custom location, so we don't depend on system-wide
-	# installation.
+# Install pip invoke into custom location, so we don't depend on system-wide
+# installation.
 	"$(PYTHON)" -m pip install --upgrade --no-user --target "$(PIP_INVOKE_DIR)" invoke
 endif
 

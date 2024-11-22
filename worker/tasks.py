@@ -203,7 +203,7 @@ def clean_subprojects(ctx):
         );
 
 
-@task
+@task(pre=[meson_ninja])
 def clean_all(ctx):
     """
     Clean meson subprojects and all installed/built artificats
